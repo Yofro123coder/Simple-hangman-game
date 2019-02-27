@@ -1,0 +1,237 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cstdlib>
+#include <array>
+#include <time.h>
+#include <windows.h>
+
+using namespace std;
+
+/*
+In this project, the strings will be arrays, and we will iterate in them
+*/
+int lives;
+
+string *answer;
+string *blank;
+bool correct;
+
+
+
+int main()
+{
+	cout << "                  *Welcome to hangman!*\n";
+	cout << "																											   Lives:5     |||||\n";
+	int length;
+	//This will pick a random array
+	srand(time(NULL));
+	int picker = (rand() % 5) + 1;
+	
+	if (picker == 1) {
+		//apple
+		answer = new string[5];
+		answer[0] = "a";
+		answer[1] = "p";
+		answer[2] = "p";
+		answer[3] = "l";
+		answer[4] = "e";
+		blank = new string[5];
+
+		length = 5;
+	}
+	else if (picker == 2) {
+
+		answer = new string[6];
+		answer[0] = "b";
+		answer[1] = "a";
+		answer[2] = "n";
+		answer[3] = "a";
+		answer[4] = "n";
+		answer[5] = "a";
+		blank = new string[6];
+
+		length = 6;
+	}
+	else if (picker == 3) {
+
+		answer = new string[6];
+		answer[0] = "o";
+		answer[1] = "r";
+		answer[2] = "a";
+		answer[3] = "n";
+		answer[4] = "g";
+		answer[5] = "e";
+		blank = new string[6];
+
+		length = 6;
+	}
+	else if (picker == 4) {
+
+		answer = new string[10];
+		answer[0] = "w";
+		answer[1] = "a";
+		answer[2] = "t";
+		answer[3] = "e";
+		answer[4] = "r";
+		answer[5] = "m";
+		answer[6] = "e";
+		answer[7] = "l";
+		answer[8] = "o";
+		answer[9] = "n";
+		blank = new string[10];
+
+		length = 10;
+	}
+	else if (picker == 5) {
+
+		answer = new string[4];
+		answer[0] = "p";
+		answer[1] = "e";
+		answer[2] = "a";
+		answer[3] = "r";
+		blank = new string[4];
+
+		length = 4;
+	}
+	else {
+		cout << "This doesn't work";
+		return 0;
+	}
+	blank = new string[length];
+	for (int i = 0; i < length; i++) {
+		blank[i] = "_";
+	}
+	int test;
+	int test1=0;
+	int test2=0;
+	bool win = false;
+	lives = 5;
+	//now guesses will be implemented
+	cout << "It is a " << length << " letter word.";
+	while (win == false) {
+		correct = false;
+		string guess;
+		cout << "\nEnter guess: ";
+		cin >> guess;
+		int a = guess.length();
+		int t = 1;
+		if (a > t) {
+			cout << "Too long, enter your guess again: ";
+			cin >> guess;
+			int b = guess.length();
+			if (b > 1) {
+				cout << "You are bad at this";
+				Sleep(1500);
+				win = true;
+			}
+		}
+		Sleep(0500);
+		system("cls");
+		cout << "                  *Welcome to hangman!*\n";
+		switch (lives) {
+		case 5:
+			cout << "																											   Lives:5     |||||\n";
+			break;
+		case 4:
+			cout << "																											   Lives:4     ||||\n";
+			break;
+		case 3:
+			cout << "																											   Lives:3     |||\n";
+			break;
+		case 2:
+			cout << "																											   Lives:2     ||\n";
+			break;
+		case 1:
+			cout << "																											   Lives:1     |\n";
+			break;
+		}
+		for (int i = 0; i < length; i++) {
+			if (guess == answer[i]) {
+				correct = true;
+				answer[i] = guess;
+				test = i;
+				test1 = i+2;
+				test2 = i + 3;
+			}
+			else if (picker == 2) {
+				if (guess == "a") {
+					blank[1] = "a";
+					blank[3] = "a";
+					blank[5] = "a";
+					//banana
+
+				}
+				else if (guess=="n") {
+					blank[2] = "n";
+					blank[4] = "n";
+				}
+			}
+			else if (picker==1) {
+				//apple
+				if (guess=="p") {
+					blank[1] = "p";
+					blank[2] = "p";
+				}
+			}
+			else if (picker == 4) {
+				//watermelon
+				if (guess == "e") {
+					blank[3] = "e";
+					blank[6] = "e";
+				}
+			}
+
+		}
+		if (correct == false) {
+			cout << "Whoops! Incorrect!";
+			lives--;
+			cout << "\nYou have " << lives << " lives\n";
+		}
+		else if (correct == true) {
+			cout << "Correct";
+		}
+		Sleep(1000);
+		cout << endl;
+		for (int i = 0; i < length; i++) {
+			
+			if (correct == true) {
+				blank[test] = guess;
+			}
+			else if (correct==true && test1>0 ) {
+				blank[test1] = guess;
+			}
+			else if (correct == true && test2 > 0) {
+				blank[test2] = guess;
+			}
+			cout << blank[i];
+		}
+		Sleep(1000);
+		int l = 0;;
+		for (int i = 0; i < length; i++) {
+			if (answer[i] == blank[i]) {
+				l++;
+
+			}
+		}
+		if (l == length) {
+			cout << "\nYou win, the word was ";
+			for (int i = 0; i < length;i++) {
+				cout << answer[i];
+			}
+			Sleep(3000);
+			win = true;
+		}
+		else if (lives<=0) {
+			cout << "\nYou lose, the word was ";
+			for (int i = 0; i < length;i++) {
+				cout << answer[i];
+			}
+			Sleep(3000);
+			win = true;
+
+		}
+		
+	}
+}
+
